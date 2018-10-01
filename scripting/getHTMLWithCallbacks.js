@@ -1,6 +1,7 @@
-var https = require('https')
+var https = require('https');
 
-function getAndPrintHTML (options) {
+
+function getHTML (options, callback) {
 
   var bufferingData = [];
 
@@ -13,12 +14,13 @@ function getAndPrintHTML (options) {
       bufferingData.push((`Chunk data in Buffering, ${data}`));
       
       bufferingData.forEach(function (element){
-        console.log(element);
+        callback(element);
       })
 
     });
-  
+
     response.on('end', function () {
+      // console.log(callback(bufferingData));
       console.log('Response stream complete.');
     });
 
@@ -26,15 +28,17 @@ function getAndPrintHTML (options) {
 
 }
 
-var requestOptions = {
-  host: 'sytantris.github.io',
-  path: '/http-examples/step3.html'
-};
-
-var testing = {
-  host: 'sytantris.github.io',
-  path: '/http-examples/step2.html'
+function printHTML (html) {
+  console.log(`Hello ${html}`) ;
 }
 
-getAndPrintHTML(requestOptions);
-getAndPrintHTML(testing);
+function testing(string) {
+  return string;
+}
+
+var requestOptions = {
+  host: 'sytantris.github.io',
+  path: '/http-examples/step4.html'
+};
+
+getHTML(requestOptions, printHTML);
